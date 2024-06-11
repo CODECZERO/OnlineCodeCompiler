@@ -26,6 +26,7 @@ const Configs = {
     }
 };
 
+
 const StartServer = async () => {
     const client = createClient();
     client.on('error', err => console.log(`Error connecting to Redis: ${err}`));
@@ -41,20 +42,20 @@ const StartServer = async () => {
 
 
             if (!language || !code) {
-                await client.publish('codeResult', JSON.stringify({
+                await client.publish(`response_${jobID}`, JSON.stringify({
                     jobID,
                     userID,
-                    error: "Language or code is not provided"
+                    error: 'Language or code is not provided'
                 }));
                 continue;
             }
 
             const config = Configs[language];
             if (!config) {
-                await client.publish('codeResult', JSON.stringify({
+                await client.publish(`response_${jobID}`, JSON.stringify({
                     jobID,
                     userID,
-                    error: "Unsupported language"
+                    error: 'Unsupported language'
                 }));
                 continue;
             }
@@ -64,23 +65,21 @@ const StartServer = async () => {
 
             fs.writeFileSync(filePath, code);
 
-
             const compileCommand = config.execute ? `${config.command} ${filePath}` : `${config.command} ${filePath}`;
             exec(compileCommand, (compileError, stdout, stderr) => {
                 if (compileError || stderr) {
-                    client.publish('codeResult', JSON.stringify({
+                    client.publish(`response_${jobID}`, JSON.stringify({
                         jobID,
                         userID,
                         error: compileError ? compileError.message : stderr
                     }));
-
                     fs.unlinkSync(filePath); // Clean up file
                     return;
                 }
 
                 if (config.execute) {
                     exec(config.execute, (runError, runStdout, runStderr) => {
-                        client.publish('codeResult', JSON.stringify({
+                        client.publish(`response_${jobID}`, JSON.stringify({
                             jobID,
                             userID,
                             output: runError ? runStderr : runStdout,
@@ -89,12 +88,14 @@ const StartServer = async () => {
                         fs.unlinkSync(filePath); // Clean up file
                     });
                 } else {
-                    client.publish('codeResult', JSON.stringify({
+                    const payload=JSON.stringify({
                         jobID,
                         userID,
                         output: stdout,
                         error: null
-                    }));
+                    });
+                    client.lPush(`response_`, payload);
+                    console.log(stdout);
                     fs.unlinkSync(filePath); // Clean up file
                 }
             });
