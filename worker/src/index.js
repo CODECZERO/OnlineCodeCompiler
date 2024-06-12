@@ -3,6 +3,7 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import { exec } from "child_process";
+import { error } from "console";
 
 
 const Configs = {
@@ -28,8 +29,7 @@ const Configs = {
 
 
 const StartServer = async () => {
-    const client = createClient();
-    client.on('error', err => console.log(`Error connecting to Redis: ${err}`));
+    const client = createClient().on('error', err => console.log(`Error connecting to Redis: ${err}`));;
     await client.connect();
     console.log('Connected to Redis');
 
@@ -42,7 +42,7 @@ const StartServer = async () => {
 
 
             if (!language || !code) {
-                await client.publish(`response_${jobID}`, JSON.stringify({
+                await client.publish(`${process.env.PUBNAME ||'response_'}`, JSON.stringify({
                     jobID,
                     userID,
                     error: 'Language or code is not provided'
@@ -52,7 +52,7 @@ const StartServer = async () => {
 
             const config = Configs[language];
             if (!config) {
-                await client.publish(`response_${jobID}`, JSON.stringify({
+                await client.publish(`${process.env.PUBNAME ||'response_'}`, JSON.stringify({
                     jobID,
                     userID,
                     error: 'Unsupported language'
@@ -68,7 +68,7 @@ const StartServer = async () => {
             const compileCommand = config.execute ? `${config.command} ${filePath}` : `${config.command} ${filePath}`;
             exec(compileCommand, (compileError, stdout, stderr) => {
                 if (compileError || stderr) {
-                    client.publish(`response_${jobID}`, JSON.stringify({
+                    client.publish(`${process.env.PUBNAME ||'response_'}`, JSON.stringify({
                         jobID,
                         userID,
                         error: compileError ? compileError.message : stderr
@@ -79,7 +79,7 @@ const StartServer = async () => {
 
                 if (config.execute) {
                     exec(config.execute, (runError, runStdout, runStderr) => {
-                        client.publish(`response_${jobID}`, JSON.stringify({
+                        client.publish(`${process.env.PUBNAME ||'response_'}`, JSON.stringify({
                             jobID,
                             userID,
                             output: runError ? runStderr : runStdout,
@@ -94,7 +94,11 @@ const StartServer = async () => {
                         output: stdout,
                         error: null
                     });
-                    client.lPush(`response_`, payload);
+                    //client.lPush("response_",payload)
+                    if(!payload){
+                        throw error("invalid payload");
+                    }
+                    client.publish('response_', payload);
                     console.log(stdout);
                     fs.unlinkSync(filePath); // Clean up file
                 }
