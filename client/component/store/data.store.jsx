@@ -3,7 +3,6 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState={
     status:true,
     UserData:null,
-    output:null,
 }
 
 const DataHandle=createSlice({
@@ -12,13 +11,10 @@ const DataHandle=createSlice({
     reducers:{
         addData:(state,action)=>{
             state.UserData=action.payload.UserData;
-            state.status=action.status;
-        },
-        ouptputData:(state,action)=>{
-            state.output=action.payload.output;
-        },
+            state.status=action.payload.status;
+        }
     }
 })
 
-export const {addData,ouptputData}=DataHandle.actions;
+export const {addData}=DataHandle.actions;
 export default DataHandle.reducer;

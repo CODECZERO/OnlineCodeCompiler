@@ -1,28 +1,35 @@
-import React, { useState,useEffect } from 'react'
-import { useSelector } from 'react-redux';
-function OutputCode(props) {
-    const [data, setData] = useState("");
-    const Usercode=useSelector((state)=>state.Data.UserData);
-    useEffect(()=>{
-        if(Usercode){
-            
+import React, { useState, useEffect } from 'react';
+import LoadingScreen from './LoadingScren';
+import { connect, useSelector } from 'react-redux';
+
+function OutputCode() {
+    const [data, setData] = useState(false);
+    const userData = useSelector((state) => state.Data.UserData);
+    let datafx="";
+    useEffect(() => {
+        setData(datafx);
+        if(!userData){
+            setData(null);
         }
-        else{
-            
-        }
+       
+        console.log(data);
     })
+
+    const getData=()=>{
+        datafx= useSelector((state) => state.Data.UserData);
+        
+    }
     return (
         <>
-            <div className=' bg-slate-300 w-[800px] h-[800px]'>
-                <div className='text-black '>
-                    {
+            <div className=' bg-slate-800 w-[800px] h-[800px]'>
+                <div className='text-black'>
+                    {getData()}
+                    {  
                         !data ? (
-                            <div>
-                                output
-                            </div>
+                            <LoadingScreen /> 
                         ) : (
-                            <div>
-                                {props.data}
+                            <div className='text-lime-600 pl-12 pt-12'>
+                                {data}
                             </div>
                         )
                     }
@@ -32,4 +39,4 @@ function OutputCode(props) {
     )
 }
 
-export default OutputCode
+export default OutputCode;

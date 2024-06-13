@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../component/pages/navbar';
 import HomePage from '../component/pages/HomePage';
 
 function App() {
-  return(
-    <>
-      <div>
-        <Navbar/>
+    return (
+      <>
         <div>
-          <HomePage/>
+          <Navbar />
+          <div>
+            <HomePage />
+          </div>
         </div>
-      </div>
-    </>
-  )
-}
+      </>
+    )
+  }
 
 export default App
