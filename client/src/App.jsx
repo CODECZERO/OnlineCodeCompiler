@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import CodeEditor from '@uiw/react-textarea-code-editor';
+import rehypePrism from "rehype-prism-plus";
+import rehypeRewrite from "rehype-rewrite";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [code, setCode] = React.useState(
+    `function add(a, b) {\n  return a + b;\n}`
+  );
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <CodeEditor
+      value={code}
+      language="js"
+      placeholder="Please enter JS code."
+      onChange={(evn) => setCode(evn.target.value)}
+      padding={15}
+      rehypePlugins={[
+        [rehypePrism, { ignoreMissing: true }],
+        [
+          rehypeRewrite,
+          {
+            rewrite: (node, index, parent) => {
+              if (node.properties?.className?.includes("code-line")) {
+                if (index === 0 && node.properties?.className) {
+                  node.properties.className.push("demo01");
+                  // console.log("~~~", index, node.properties?.className);
+                }
+              }
+              if (node.type === "text" && node.value === "return" && parent.children.length === 1) {
+                parent.properties.className.push("demo123");
+              }
+            }
+          }
+        ]
+      ]}
+      style={{
+        fontSize: 12,
+        backgroundColor: "#f5f5f5",
+        fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+      }}
+    />
+  );
 }
-
-export default App
+export default app;
