@@ -36,6 +36,10 @@ const StartServer = async () => {
 
     while (true) {
         try {
+            
+            await new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
 
             const data = await client.brPop("submission", 0);
             const { jobID, userID, language, code } = JSON.parse(data.element);
