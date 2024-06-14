@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  app1:
+    build:
+      context: .
+      dockerfile: ./server/dockerfile.server
+    ports:
+      - "4070:4070"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  app2:
+    build:
+      context: .
+      dockerfile: ./worker/dockerfile.worker
+    ports:
+      - "4080:4080"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  redis:
+    image: "redis"
+    ports:
+      - "6379:6379"
+ 

@@ -17,7 +17,7 @@ function DropDown() {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
-                    <h2 className="text-lg font-semibold mb-2">Select language</h2>
+                    <h2 className="text-lg font-semibold mb-2">{error}</h2>
                     <p className="text-gray-700 hover:text-white">
                         {error}
                     </p>

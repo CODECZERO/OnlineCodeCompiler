@@ -1,0 +1,18 @@
+FROM node
+
+WORKDIR /usr/src/app
+
+COPY server/package*.json ./
+
+RUN npm install
+
+COPY ./server/src/app.js .
+COPY ./server/src/index.js .
+
+
+
+EXPOSE 4070
+
+
+
+ENTRYPOINT [ "node","index.js" ]
