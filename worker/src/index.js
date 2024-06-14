@@ -89,6 +89,7 @@ const StartServer = async () => {
                             output: runError ? runStderr : runStdout,
                             error: runError ? runError.message : null
                         }));
+                        console.log(runError);
                         fs.unlinkSync(filePath); // Clean up file
                     });
                 } else {
@@ -103,7 +104,7 @@ const StartServer = async () => {
                         throw error("invalid payload");
                     }
                     client.publish('response_', payload);
-                    console.log(stdout);
+                    console.log(stdout)
                     fs.unlinkSync(filePath); // Clean up file
                 }
             });
