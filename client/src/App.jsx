@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from '../component/pages/navbar';
 import HomePage from '../component/pages/HomePage';
+import DropDown from '../component/pages/DropDown';
 
 function App() {
     return (
@@ -8,6 +9,9 @@ function App() {
         <div>
           <Navbar />
           <div>
+            <div>
+              <DropDown/>
+            </div>
             <HomePage />
           </div>
         </div>

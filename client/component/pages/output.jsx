@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import LoadingScreen from './LoadingScren';
-import { connect, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function OutputCode() {
     const [data, setData] = useState(false);
     const userData = useSelector((state) => state.Data.UserData);
+    const lang=useSelector((state)=>{state.Data.language});
     let datafx="";
     useEffect(() => {
         setData(datafx);
         if(!userData){
             setData(null);
         }
-       
-        console.log(data);
     })
 
     const getData=()=>{
@@ -26,10 +25,10 @@ function OutputCode() {
                     {getData()}
                     {  
                         !data ? (
-                            <LoadingScreen /> 
+                            <LoadingScreen/>
                         ) : (
                             <div className='text-lime-600 pl-12 pt-12'>
-                                {data}
+                                {JSON.parse(data)}
                             </div>
                         )
                     }
