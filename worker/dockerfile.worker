@@ -1,0 +1,14 @@
+FROM node
+
+WORKDIR /usr/src/app
+
+COPY worker/package*.json ./
+
+RUN npm install
+
+COPY ./worker/src/index.js .
+RUN mkdir public
+
+EXPOSE 4080
+
+ENTRYPOINT [ "node","index.js" ]
