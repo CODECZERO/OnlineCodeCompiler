@@ -21,8 +21,17 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
 
+  app3:
+    build:
+      context: .
+      dockerfile: ./client/dockerfile.client
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_WEBSOCKET_URL="ws://0.0.0.0:4060"
+
+    
   redis:
     image: "redis"
     ports:
       - "6379:6379"
- 

@@ -1,0 +1,29 @@
+# Use an official Node.js runtime as a parent image
+FROM node as build
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json (if available)
+COPY ./client/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY client/ .
+
+# Build the application
+RUN npm run build
+
+# Stage 2: Serve the app using a lightweight HTTP server
+FROM nginx:alpine
+
+# Copy the built files from the first stage to Nginx's html directory
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Nginx is automatically started by the base image
+

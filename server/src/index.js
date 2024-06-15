@@ -36,6 +36,10 @@ try {
             }
     
             const payload = JSON.stringify({ userID, language, code });
+            
+            await new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
     
             await redisClient.lPush(submissionChannel, payload);
     

@@ -10,5 +10,12 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
+  root: '.',
+  build: {
+    outDir: 'dist',
+    rollupOptions: {
+      input: 'index.html',
+    },
+  },
 
 });
