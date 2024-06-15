@@ -1,14 +1,50 @@
-FROM node
+FROM ubuntu
+ENV DEBIAN_FRONTEND=noninteractive
 
+#install nodejs in the ubuntu
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    build-essential
+
+
+
+
+#tells the path to container
+ENV NVM_DIR=/root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+RUN /bin/bash -c "source $NVM_DIR/nvm.sh && nvm install 22 && nvm use 22 && nvm alias default 22"
+
+ENV NODE_VERSION=22
+ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
+ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+RUN /bin/bash -c "source $NVM_DIR/nvm.sh && node -v"
+RUN /bin/bash -c "source $NVM_DIR/nvm.sh && npm -v"
+
+#working DIr of the code
 WORKDIR /usr/src/app
 
 COPY worker/package*.json ./
 
-RUN npm install
+RUN /bin/bash -c "source $NVM_DIR/nvm.sh && npm install"
 
+#copy main file to ru server
 COPY ./worker/src/index.js .
+
+#make public folder so code can store there and later run
 RUN mkdir public
 
+#install and check if there is python
+RUN apt-get install -y \
+    python3 \
+    python3-pip
+
+RUN python3 --version
+RUN pip3 --version
+
+#port expose is not need but still, i have open, it may rquire in future
 EXPOSE 4080
 
-ENTRYPOINT [ "node","index.js" ]
+#runing the js file or node server to recive code
+ENTRYPOINT ["/bin/bash", "-c", "source $NVM_DIR/nvm.sh && node index.js"]

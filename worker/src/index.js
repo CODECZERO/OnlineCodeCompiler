@@ -10,7 +10,7 @@ config()
 const Configs = {
     python: {
         extension: '.py',
-        command: 'python'
+        command: 'python3'
     },
     node: {
         extension: '.js',
