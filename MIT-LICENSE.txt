@@ -1,6 +1,3 @@
-Certainly! Here is an MIT License template that you can use for your project:
-
-```
 MIT License
 
 Copyright (c) 2024 Ankit Mahar (CODECZERO)
@@ -22,6 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
-
-Replace `[Your Name or Your Company]` with your name or the name of your organization. This license grants users permission to use, copy, modify, and distribute your software, while limiting liability and warranty.

@@ -10,8 +10,8 @@ function HomePage() {
     const [loading, setLoding] = useState(useSelector((state) => state.Data.status));
     const id = useId();
     const lang = useSelector((state) => state.Data.language);
-    
-    setTimeout(()=>{return},2000);
+
+    setTimeout(() => { return }, 2000);
     const socket = useWebSocket(import.meta.env.VITE_WEBSOCKET_URL);
 
     const FormHandle = (event) => {
@@ -26,7 +26,12 @@ function HomePage() {
     };
 
     if (!socket) {
-        return <div>Loading....</div>;
+        return <div className='h-screen  w-screen'><div className='flex justify-center items-center bg-white h-screen dark:invert'>
+            <span className='sr-only'>Loading...</span>
+            <div className='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+            <div className='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+            <div className='h-8 w-8 bg-black rounded-full animate-bounce'></div>
+        </div></div>;
     }
 
     return (
