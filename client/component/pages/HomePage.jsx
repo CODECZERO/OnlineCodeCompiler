@@ -4,11 +4,12 @@ import ControllerCode from '../codeEditore/controller';
 import { useDispatch, useSelector } from 'react-redux';
 import { addData, addError } from '../store/data.store';
 import useWebSocket from './useWebsocket';
+import { nanoid } from '@reduxjs/toolkit';
 
 function HomePage() {
     const dispatch = useDispatch();
     const [loading, setLoding] = useState(useSelector((state) => state.Data.status));
-    const id = useId();
+    const id = nanoid(8);
     const lang = useSelector((state) => state.Data.language);
 
     setTimeout(() => { return }, 2000);
