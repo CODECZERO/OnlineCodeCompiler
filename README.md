@@ -46,7 +46,7 @@ This project is a web-based code compilation and execution system designed to al
 
     # Client Environment Variables
     ENV VITE_WEBSOCKET_URLL=ws://loclahost:4060
-    ENV PORT=3000
+    ENV PORT=5173
 
   # Worker Environment Variables
     ENV REDIS_HOST=redis
@@ -91,7 +91,7 @@ Contributions are welcome! Please follow these steps:
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/CODECZERO/OnlineCodeCompiler/blob/main/LICENSE.txt) file for details.
 
 ## Acknowledgments
 
